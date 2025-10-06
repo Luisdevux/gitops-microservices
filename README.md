@@ -1,7 +1,11 @@
-# Online Boutique - Microservices Demo com Kubernetes e Argo CD
+# 🛒 Online Boutique - Microservices Demo com Kubernetes e Argo CD
+
+[![Argo CD Sync Status](https://img.shields.io/badge/ArgoCD-Syncing-blue?style=flat-square)]()
+[![Pods Status](https://img.shields.io/badge/Pods-Running-green?style=flat-square)]()
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=flat-square)]()
 
 Este repositório contém a versão configurada do **projeto Online Boutique** da Google Cloud Platform, adaptado para rodar com **Kubernetes** e gerenciado pelo **Argo CD**.  
-Ele simula uma loja online com múltiplos microserviços, incluindo front-end, back-end, serviços de pagamento, recomendação, carrinho e mais.
+Ele simula uma loja online com múltiplos microserviços (front-end, back-end, carrinho, checkout, pagamento, recomendação, etc).
 
 ---
 
@@ -11,7 +15,7 @@ O projeto é composto pelos seguintes microserviços:
 
 | Serviço                  | Tipo         | Porta |
 |--------------------------|-------------|-------|
-| `frontend`               | Deployment  | 8080  |
+| `frontend`               | Deployment  | 80/8081  |
 | `cartservice`            | Deployment  | 7070  |
 | `checkoutservice`        | Deployment  | 5050  |
 | `currencyservice`        | Deployment  | 7000  |
@@ -119,6 +123,39 @@ online-boutique  cartservice-xxxxx-xxxxx                1/1     Running
 
 ---
 
+## 🌐 Acessando o Front-end da Online Boutique no Localhost
+
+#### Se você está rodando os microserviços no cluster do Kubernetes via Argo CD, é possível acessar o front-end localmente usando `kubectl port-forward`.  
+
+### 1️⃣ Listando os pods do front-end
+
+Primeiro, encontre o pod do front-end:
+
+```bash
+kubectl get pods -n default | grep frontend
+```
+
+Exemplo de saída:
+```bash
+frontend-645dcc4d68-abcde  1/1  Running  0  5m
+```
+
+### 2️⃣ Criando o port-forward
+Execute o seguinte comando substituindo `frontend-645dcc4d68-abcde` pelo nome do seu pod:
+
+```bash
+kubectl port-forward pod/frontend-645dcc4d68-abcde 8081:80 -n default
+```
+Isso irá redirecionar a porta 80 do pod para a porta 8081 da sua máquina local.
+
+### 3️⃣ Acessando pelo navegador
+Abra o navegador e acesse:
+http://localhost:8081
+
+Agora você verá o front-end da Online Boutique e poderá interagir com todos os microserviços como se estivesse rodando em produção.
+
+---
+
 ## 🔧 Ajustando Réplicas (Opcional)
 
 ### Para o loadgenerator aumentar a carga simulada, altere o número de réplicas no manifest:
@@ -140,7 +177,21 @@ spec:
 
 ---
 
+## 🖥️ Exemplo Da Estrutura no Argo CD
+
+![UI Argo CD](./img/Arvore-argocd.png)
+
+---
+
+## 🧪 Exemplo de Funcionamento:
+
+![Página no ar](./img/Deploy-Kubernets.png)
+
+---
+
 ## 📚 Referências
 - [GoogleCloudPlatform/microservices-demo](https://github.com/GoogleCloudPlatform/microservices-demo)
 - [Kubernetes Documentation](https://kubernetes.io/docs/home/)
 - [Argo CD Documentation](https://argo-cd.readthedocs.io/en/stable/)
+
+> ### Este projeto está licenciado sob a [Licença MIT](./LICENSE).
