@@ -33,12 +33,14 @@ Todos os serviços estão configurados com **ServiceAccounts**, probes de **read
 ---
 
 ## 📂 Estrutura de Diretórios
-```yaml
+```bash
 gitops-microservices/
-└──k8s/
-   └── online-boutique.yaml
+├── img/
+├── k8s/
+│   └── online-boutique.yaml
+├── LICENSE
+└── README.md
 ```
-
 
 > Observação: Todos os manifests foram unificados em um único arquivo `online-boutique.yaml`.
 
