@@ -15,7 +15,7 @@ O projeto é composto pelos seguintes microserviços:
 
 | Serviço                  | Tipo         | Porta |
 |--------------------------|-------------|-------|
-| `frontend`               | Deployment  | 80/8081  |
+| `frontend`               | Deployment  | 8080  |
 | `cartservice`            | Deployment  | 7070  |
 | `checkoutservice`        | Deployment  | 5050  |
 | `currencyservice`        | Deployment  | 7000  |
@@ -146,9 +146,15 @@ frontend-645dcc4d68-abcde  1/1  Running  0  5m
 Execute o seguinte comando substituindo `frontend-645dcc4d68-abcde` pelo nome do seu pod:
 
 ```bash
-kubectl port-forward pod/frontend-645dcc4d68-abcde 8081:80 -n default
+kubectl port-forward pod/frontend-645dcc4d68-abcde 8081:8080 -n default
 ```
-Isso irá redirecionar a porta 80 do pod para a porta 8081 da sua máquina local.
+Isso irá redirecionar a porta 8080 do pod para a porta 8081 da sua máquina local.
+
+## 💬 Alternativamente, você pode fazer o redirecionamento via Service:
+```bash
+kubectl port-forward service/frontend 8081:80 -n default
+```
+Isso redireciona a porta 80 do Service (mapeada para 8080 do pod) para a porta 8081 do seu host.
 
 ### 3️⃣ Acessando pelo navegador
 Abra o navegador e acesse:
