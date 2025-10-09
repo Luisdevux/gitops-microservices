@@ -177,6 +177,82 @@ spec:
 
 ---
 
+## 🔐 Como conectar um repositório privado ao ArgoCD (Extra opcional) 
+
+### Caso o seu repositório Git seja privado, o ArgoCD precisará de uma chave SSH para conseguir acessá-lo.
+
+### Siga os passos abaixo para configurar o acesso seguro:
+
+### 1. Gere uma chave SSH
+
+#### Execute o comando abaixo no terminal onde o ArgoCD está configurado:
+
+```bash
+ssh-keygen -t rsa -b 4096 -C "argocd-access"
+```
+
+#### Pressione Enter em todas as situações até a chave ser criada.
+
+### 2. Copie a chave pública
+
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+
+#### Copie todo o conteúdo exibido (ele começa com ssh-rsa).
+
+### 3. Adicione a chave ao GitHub
+
+- Acesse GitHub → Settings → SSH and GPG keys
+
+- Clique em New SSH key
+
+- No campo Title, digite algo como ArgoCD Access
+
+- Cole o conteúdo copiado da etapa anterior
+
+- Clique em Add SSH key
+
+### 4. Teste a conexão
+
+#### Verifique se o acesso está funcionando corretamente:
+
+```bash
+ssh -T git@github.com
+```
+
+#### Se tudo estiver certo, você verá uma mensagem como:
+
+```bash
+Hi <seu-usuário>! You've successfully authenticated.
+```
+
+### 5. Adicione o repositório privado ao ArgoCD
+
+#### Com a chave configurada, adicione o repositório:
+
+```bash
+argocd repo add git@github.com:SEU_USUARIO/SEU_REPOSITORIO.git \
+  --ssh-private-key-path ~/.ssh/id_rsa
+```
+
+### 6. Confirme se o repositório foi adicionado:
+
+```bash
+argocd repo list
+```
+
+#### Saída esperada:
+
+```bash
+TYPE  NAME                                           REPO                                           INPROJECT
+git   git@github.com:SEU_USUARIO/SEU_REPOSITORIO.git  default
+```
+
+### ✅ Pronto! Agora o Argo CD tem acesso ao seu repositório privado e pode sincronizar os manifests normalmente, assim como faria com um repositório público.
+
+---
+
 ## 📌 Dicas e Observações:
 - Todos os serviços têm readiness/liveness probes para garantir saúde do cluster.
 - O Argo CD mostra OutOfSync, Syncing e Healthy para monitoramento.
